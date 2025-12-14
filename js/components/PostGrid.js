@@ -11,6 +11,7 @@ window.PostGrid = ({ data, loading, error }) => {
                     title={post.title}
                     body={post.body}
                     friend={post.friend}
+                    created_at={post.created_at}
                 />
             ))}
         </div>
