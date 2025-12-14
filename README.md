@@ -22,3 +22,10 @@ O projeto está pronto para ser hospedado na Vercel. Siga os passos abaixo:
 - `index.html`: Arquivo principal.
 - `css/`: Estilos CSS.
 - `js/`: Lógica da aplicação dividida em componentes.
+- `api/`: Funções Serverless para conectar ao Banco de Dados.
+
+## Variáveis de Ambiente (Neon DB)
+
+Para que o banco de dados funcione, você precisa garantir que a variável de ambiente `DATABASE_URL` esteja configurada no painel da Vercel.
+
+Se você utilizou a aba "Storage" da Vercel para adicionar o Neon, isso já deve estar configurado automaticamente.

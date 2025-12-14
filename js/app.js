@@ -6,29 +6,31 @@ window.App = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                // 1. Load local pearls first
-                const localPearls = JSON.parse(localStorage.getItem('my_pearls') || '[]');
+    // Fetch data from our Serverless API
+    const fetchData = async () => {
+        setLoading(true);
+        try {
+            const response = await fetch('/api/posts');
 
-                const response = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=12');
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const apiResult = await response.json();
-
-                // 2. Combine: Local pearls first, then API pearls
-                setTimeout(() => {
-                    setData([...localPearls, ...apiResult]);
-                    setLoading(false);
-                }, 800);
-            } catch (err) {
-                setError(err.message);
-                setLoading(false);
+            if (!response.ok) {
+                // Determine if it's a server error or network error
+                const errorText = await response.text();
+                throw new Error(`Server Error: ${response.status} ${errorText}`);
             }
-        };
 
+            const result = await response.json();
+            setData(result);
+            setError(null);
+        } catch (err) {
+            console.error("Failed to fetch posts:", err);
+            // Fallback for local development/broken connection
+            setError("Could not load pearls. (If running locally, this is expected if API is not emulated)");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
         fetchData();
     }, []);
 
@@ -36,22 +38,28 @@ window.App = () => {
         setCurrentView(view);
     };
 
-    const handleSubmitPost = ({ title, body, friend }) => {
-        const newPost = {
-            id: Date.now(),
-            title: title,
-            body: body,
-            friend: friend
-        };
+    const handleSubmitPost = async ({ title, body, friend }) => {
+        try {
+            const response = await fetch('/api/posts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ title, body, friend }),
+            });
 
-        // 1. Update UI state
-        setData([newPost, ...data]);
-        setCurrentView('home');
+            if (!response.ok) {
+                throw new Error('Failed to save post');
+            }
 
-        // 2. Save to LocalStorage
-        const existingPearls = JSON.parse(localStorage.getItem('my_pearls') || '[]');
-        const updatedPearls = [newPost, ...existingPearls];
-        localStorage.setItem('my_pearls', JSON.stringify(updatedPearls));
+            const newPost = await response.json();
+
+            // Update UI with new post (optimistic or robust)
+            setData([newPost, ...data]);
+            setCurrentView('home');
+        } catch (err) {
+            alert('Failed to save pearl: ' + err.message);
+        }
     };
 
     return (
