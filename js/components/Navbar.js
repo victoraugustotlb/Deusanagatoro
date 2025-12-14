@@ -1,14 +1,18 @@
 window.Navbar = ({ onNavigate, onToggleTheme, theme }) => (
     <nav className="navbar">
         <a href="#" className="nav-brand" onClick={(e) => { e.preventDefault(); onNavigate('home'); }}>Perolas da Call</a>
-        <div style={{ display: 'flex', gap: '1rem' }}>
-            <button
-                className="btn-primary"
-                onClick={onToggleTheme}
-                style={{ backgroundColor: theme === 'light' ? '#334155' : '#e2e8f0', color: theme === 'light' ? '#fff' : '#0f172a' }}
-            >
-                Correr
-            </button>
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+            <div className="theme-toggle-wrapper">
+                <label className="theme-switch" title="Alternar tema">
+                    <input
+                        type="checkbox"
+                        checked={theme === 'light'}
+                        onChange={onToggleTheme}
+                    />
+                    <span className="slider round"></span>
+                </label>
+                <span className="theme-label">{theme === 'light' ? 'Modo Claro' : 'Modo Escuro'}</span>
+            </div>
             <button className="btn-primary" onClick={() => onNavigate('add')}>Adicionar</button>
         </div>
     </nav>
