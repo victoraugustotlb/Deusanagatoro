@@ -32,6 +32,8 @@ export default async function handler(request, response) {
             }
 
             const { rows } = await pool.query(
+                'INSERT INTO pearls (title, body, friend) VALUES ($1, $2, $3) RETURNING *',
+                [title, body, friend]
             );
             return response.status(201).json(rows[0]);
         } else if (request.method === 'DELETE') {
