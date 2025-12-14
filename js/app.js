@@ -5,6 +5,17 @@ window.App = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
+
+    // Apply theme on mount and change
+    useEffect(() => {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+    }, [theme]);
+
+    const handleToggleTheme = () => {
+        setTheme(prevTheme => prevTheme === 'dark' ? 'light' : 'dark');
+    };
 
     // Fetch data from our Serverless API
     const fetchData = async () => {
@@ -82,7 +93,11 @@ window.App = () => {
 
     return (
         <React.Fragment>
-            <window.Navbar onNavigate={handleNavigate} />
+            <window.Navbar
+                onNavigate={handleNavigate}
+                onToggleTheme={handleToggleTheme}
+                theme={theme}
+            />
             <div className="container">
                 {currentView === 'home' ? (
                     <React.Fragment>
