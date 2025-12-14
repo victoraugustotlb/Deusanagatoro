@@ -62,6 +62,24 @@ window.App = () => {
         }
     };
 
+    const handleDeletePost = async (id) => {
+        if (!confirm('Tem certeza que deseja excluir esta pérola?')) return;
+
+        try {
+            const response = await fetch(`/api/posts?id=${id}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to delete post');
+            }
+
+            setData(data.filter(post => post.id !== id));
+        } catch (err) {
+            alert('Failed to delete pearl: ' + err.message);
+        }
+    };
+
     return (
         <React.Fragment>
             <window.Navbar onNavigate={handleNavigate} />
@@ -73,7 +91,12 @@ window.App = () => {
                             <p className="subtitle">Fetching live data using React & Modern CSS</p>
                         </header>
                         <main>
-                            <window.PostGrid data={data} loading={loading} error={error} />
+                            <window.PostGrid
+                                data={data}
+                                loading={loading}
+                                error={error}
+                                onDelete={handleDeletePost}
+                            />
                         </main>
                     </React.Fragment>
                 ) : (

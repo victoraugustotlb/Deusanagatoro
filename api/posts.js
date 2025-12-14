@@ -32,10 +32,17 @@ export default async function handler(request, response) {
             }
 
             const { rows } = await pool.query(
-                'INSERT INTO pearls (title, body, friend) VALUES ($1, $2, $3) RETURNING *',
-                [title, body, friend]
             );
             return response.status(201).json(rows[0]);
+        } else if (request.method === 'DELETE') {
+            // 4. Delete pearl
+            const { id } = request.query;
+            if (!id) {
+                return response.status(400).json({ error: 'Missing ID' });
+            }
+
+            await pool.query('DELETE FROM pearls WHERE id = $1', [id]);
+            return response.status(200).json({ success: true });
         } else {
             return response.status(405).json({ error: 'Method not allowed' });
         }

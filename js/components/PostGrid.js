@@ -1,4 +1,4 @@
-window.PostGrid = ({ data, loading, error }) => {
+window.PostGrid = ({ data, loading, error, onDelete }) => {
     if (loading) return <window.Loading />;
     if (error) return <window.Error message={error} />;
 
@@ -12,6 +12,7 @@ window.PostGrid = ({ data, loading, error }) => {
                     body={post.body}
                     friend={post.friend}
                     created_at={post.created_at}
+                    onDelete={onDelete}
                 />
             ))}
         </div>
