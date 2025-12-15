@@ -6,6 +6,7 @@ window.App = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
+    const [filter, setFilter] = useState('Todos');
 
     // Apply theme on mount and change
     useEffect(() => {
@@ -105,9 +106,19 @@ window.App = () => {
                             <h1>As pérolas de 2026 já estão aqui</h1>
                             <p className="subtitle">Disclaimer: utilize de forma moderada, database limitada!</p>
                         </header>
+
+                        <div style={{ maxWidth: '300px', margin: '0 0 2rem 0' }}>
+                            <window.CustomSelect
+                                value={filter}
+                                onChange={setFilter}
+                                options={['Todos', ...window.FRIENDS]}
+                                label="Filtrar por nome"
+                            />
+                        </div>
+
                         <main>
                             <window.PostGrid
-                                data={data}
+                                data={filter === 'Todos' ? data : data.filter(post => post.friend === filter)}
                                 loading={loading}
                                 error={error}
                                 onDelete={handleDeletePost}
