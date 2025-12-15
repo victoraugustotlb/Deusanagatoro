@@ -136,6 +136,8 @@ p.subtitle {
     color: var(--text-secondary);
     font-size: 0.95rem;
     flex-grow: 1;
+    white-space: pre-wrap;
+    word-break: break-word;
 }
 
 .loading-container {
