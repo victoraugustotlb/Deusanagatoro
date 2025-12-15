@@ -121,6 +121,7 @@ window.App = () => {
                     />
                 )}
             </div>
+            <window.Footer />
         </React.Fragment>
     );
 };
