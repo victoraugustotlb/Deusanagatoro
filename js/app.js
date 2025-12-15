@@ -103,7 +103,7 @@ window.App = () => {
                     <React.Fragment>
                         <header>
                             <h1>As pérolas de 2026 já estão aqui</h1>
-                            <p className="subtitle">Fetching live data using React & Modern CSS</p>
+                            <p className="subtitle">Disclaimer: utilize de forma moderada, database limitada!</p>
                         </header>
                         <main>
                             <window.PostGrid
