@@ -1,21 +1,37 @@
 window.BooksPage = () => {
     const [selectedBook, setSelectedBook] = React.useState(null);
+    const [books, setBooks] = React.useState([]);
+    const [loading, setLoading] = React.useState(true);
+    const [error, setError] = React.useState(null);
 
-    // Temporary dummy data
-    const books = [
-        { id: 1, title: "O Senhor dos Anéis", author: "J.R.R. Tolkien", heightClass: "h-4", colorClass: "color-3" },
-        { id: 2, title: "1984", author: "George Orwell", heightClass: "h-2", colorClass: "color-1" },
-        { id: 3, title: "Dom Quixote", author: "Miguel de Cervantes", heightClass: "h-3", colorClass: "color-6" },
-        { id: 4, title: "O Pequeno Príncipe", author: "Antoine de Saint-Exupéry", heightClass: "h-5", colorClass: "color-4" },
-        { id: 5, title: "Duna", author: "Frank Herbert", heightClass: "h-4", colorClass: "color-2" },
-        { id: 6, title: "Fundação", author: "Isaac Asimov", heightClass: "h-1", colorClass: "color-5" },
-        { id: 7, title: "O Hobbit", author: "J.R.R. Tolkien", heightClass: "h-2", colorClass: "color-3" },
-        { id: 8, title: "Harry Potter", author: "J.K. Rowling", heightClass: "h-3", colorClass: "color-7" },
-        { id: 9, title: "A Revolução dos Bichos", author: "George Orwell", heightClass: "h-6", colorClass: "color-1" },
-        { id: 10, title: "O Alquimista", author: "Paulo Coelho", heightClass: "h-2", colorClass: "color-3" },
-        { id: 11, title: "Clean Code", author: "Robert C. Martin", heightClass: "h-3", colorClass: "color-6" },
-        { id: 12, title: "Neuromancer", author: "William Gibson", heightClass: "h-4", colorClass: "color-8" },
-    ];
+    React.useEffect(() => {
+        const fetchBooks = async () => {
+            try {
+                const response = await fetch('/api/books');
+                if (!response.ok) throw new Error('Failed to fetch books');
+                const data = await response.json();
+
+                // Process books to add randomized visual properties if not present
+                const processedBooks = data.map((book, index) => ({
+                    ...book,
+                    // Use database values if they exist, otherwise fallback to random/defaults
+                    heightClass: book.height_class || `h-${(index % 6) + 1}`,
+                    colorClass: book.color_class || `color-${(index % 8) + 1}`
+                }));
+
+                setBooks(processedBooks);
+            } catch (err) {
+                console.error("Error loading books:", err);
+                // Fallback to empty or error state - for now just empty
+                // In a real app we might show a toast
+                setError("Could not load books.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchBooks();
+    }, []);
 
     const handleBookClick = (book) => {
         setSelectedBook(book);
@@ -34,18 +50,42 @@ window.BooksPage = () => {
 
             <main>
                 <div className="bookshelf-container">
-                    <div className="bookshelf">
-                        {books.map((book) => (
-                            <div
-                                key={book.id}
-                                className={`book-spine ${book.colorClass} ${book.heightClass}`}
-                                title={`${book.title} - ${book.author}`}
-                                onClick={() => handleBookClick(book)}
-                            >
-                                {book.title}
-                            </div>
-                        ))}
-                    </div>
+                    {loading ? (
+                        <div style={{ color: 'white', textAlign: 'center', padding: '2rem' }}>Carregando biblioteca...</div>
+                    ) : error ? (
+                        <div style={{ color: '#ef4444', textAlign: 'center', padding: '2rem' }}>
+                            {error}
+                            <br /><small>(Se estiver rodando localmente sem o servidor da API, isso é esperado)</small>
+                        </div>
+                    ) : (
+                        <div className="bookshelf">
+                            {books.length === 0 && (
+                                <div style={{ color: '#94a3b8', textAlign: 'center', padding: '2rem', width: '100%' }}>
+                                    Nenhum livro na estante ainda.
+                                </div>
+                            )}
+                            {books.map((book) => (
+                                <div
+                                    key={book.id}
+                                    className={`book-spine ${!book.spine_url ? book.colorClass : ''} ${book.heightClass}`}
+                                    title={`${book.title} - ${book.author}`}
+                                    onClick={() => handleBookClick(book)}
+                                    style={book.spine_url ? {
+                                        backgroundImage: `url(${book.spine_url})`,
+                                        backgroundSize: 'cover',
+                                        backgroundPosition: 'center',
+                                        color: 'transparent', /* Hide text if spine image exists? Or keep for readability? Let's keep transparent text if image */
+                                        textShadow: 'none'
+                                    } : {}}
+                                >
+                                    {/* If we have a spine URL, we might want to hide the text or style it differently. 
+                                        For now, if spine_url is present, we'll assume the image has the title or we just hide the text to show the image cleanly.
+                                    */}
+                                    {!book.spine_url && book.title}
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 {selectedBook && (
@@ -59,8 +99,17 @@ window.BooksPage = () => {
                             </button>
 
                             <div className="book-cover-display">
-                                <div className={`book-cover-card ${selectedBook.colorClass}`}>
-                                    {selectedBook.title}
+                                <div
+                                    className={`book-cover-card ${!selectedBook.cover_url ? selectedBook.colorClass : ''}`}
+                                    style={selectedBook.cover_url ? {
+                                        backgroundImage: `url(${selectedBook.cover_url})`,
+                                        backgroundSize: 'cover',
+                                        backgroundPosition: 'center',
+                                        color: 'transparent',
+                                        textShadow: 'none'
+                                    } : {}}
+                                >
+                                    {!selectedBook.cover_url && selectedBook.title}
                                 </div>
                             </div>
 
@@ -71,9 +120,7 @@ window.BooksPage = () => {
                                 <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1.5rem' }}>
                                     <h3 style={{ marginBottom: '1rem' }}>Sobre</h3>
                                     <p style={{ lineHeight: '1.6', color: '#cbd5e1' }}>
-                                        Informações do livro serão adicionadas aqui em breve.
-                                        Este espaço é reservado para a sinopse, avaliação pessoal,
-                                        ou qualquer outro detalhe relevante sobre a obra.
+                                        {selectedBook.description || "Informações do livro serão adicionadas aqui em breve."}
                                     </p>
                                 </div>
                             </div>
