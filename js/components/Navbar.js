@@ -89,7 +89,18 @@ window.Navbar = ({ onNavigate, onToggleTheme, theme, currentView }) => {
                     </label>
                     <span className="theme-label">{theme === 'light' ? 'Modo Claro' : 'Modo Escuro'}</span>
                 </div>
-                <button className="btn-primary" onClick={() => onNavigate('add')}>Adicionar</button>
+                <button
+                    className="btn-primary"
+                    onClick={() => {
+                        if (currentView === 'books' || currentView === 'add-book') {
+                            onNavigate('add-book');
+                        } else {
+                            onNavigate('add');
+                        }
+                    }}
+                >
+                    {currentView === 'books' || currentView === 'add-book' ? 'Adicionar Livro' : 'Adicionar'}
+                </button>
             </div>
         </nav>
     );

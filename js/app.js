@@ -92,6 +92,24 @@ window.App = () => {
         }
     };
 
+    const handleSubmitBook = async ({ title, author, cover_url, spine_url }) => {
+        try {
+            const response = await fetch('/api/books', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, author, cover_url, spine_url }),
+            });
+
+            if (!response.ok) throw new Error('Failed to save book');
+
+            // Force reload of books page data? 
+            // For now, simpler to just navigate back. BooksPage will refetch on mount.
+            setCurrentView('books');
+        } catch (err) {
+            alert('Failed to save book: ' + err.message);
+        }
+    };
+
     return (
         <React.Fragment>
             <window.Navbar
@@ -137,6 +155,13 @@ window.App = () => {
 
                 {currentView === 'books' && (
                     <window.BooksPage />
+                )}
+
+                {currentView === 'add-book' && (
+                    <window.AddBook
+                        onCancel={() => handleNavigate('books')}
+                        onSubmit={handleSubmitBook}
+                    />
                 )}
             </div>
             <window.Footer />
