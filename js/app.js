@@ -100,7 +100,7 @@ window.App = () => {
                 theme={theme}
             />
             <div className="container">
-                {currentView === 'home' ? (
+                {currentView === 'home' && (
                     <React.Fragment>
                         <header>
                             <h1>As pérolas de 2026 já estão aqui</h1>
@@ -125,11 +125,17 @@ window.App = () => {
                             />
                         </main>
                     </React.Fragment>
-                ) : (
+                )}
+
+                {currentView === 'add' && (
                     <window.AddPost
                         onCancel={() => handleNavigate('home')}
                         onSubmit={handleSubmitPost}
                     />
+                )}
+
+                {currentView === 'books' && (
+                    <window.Books />
                 )}
             </div>
             <window.Footer />
