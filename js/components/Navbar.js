@@ -1,4 +1,4 @@
-window.Navbar = ({ onNavigate, onToggleTheme, theme }) => {
+window.Navbar = ({ onNavigate, onToggleTheme, theme, currentView }) => {
     const [isOpen, setIsOpen] = React.useState(false);
     const dropdownRef = React.useRef(null);
 
@@ -28,7 +28,9 @@ window.Navbar = ({ onNavigate, onToggleTheme, theme }) => {
                     onClick={() => setIsOpen(!isOpen)}
                     style={{ border: 'none', background: 'transparent', padding: '0.5rem 0' }}
                 >
-                    <span className="nav-brand" style={{ marginRight: '0.5rem' }}>Perolas da Call</span>
+                    <span className="nav-brand" style={{ marginRight: '0.5rem' }}>
+                        {currentView === 'books' ? 'Livros' : 'Perolas da Call'}
+                    </span>
                     <div className="arrow">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <polyline points="6 9 12 15 18 9"></polyline>
@@ -37,18 +39,23 @@ window.Navbar = ({ onNavigate, onToggleTheme, theme }) => {
                 </div>
                 {isOpen && (
                     <div className="custom-select-options" style={{ minWidth: '100%' }}>
-                        <div
-                            className="custom-option"
-                            onClick={() => handleSelect('home')}
-                        >
-                            Pérolas
-                        </div>
-                        <div
-                            className="custom-option"
-                            onClick={() => handleSelect('books')}
-                        >
-                            Livros
-                        </div>
+                        {currentView !== 'home' && (
+                            <div
+                                className="custom-option"
+                                onClick={() => handleSelect('home')}
+                            >
+                                Pérolas
+                            </div>
+                        )}
+                        {currentView !== 'books' && (
+                            <div
+                                className="custom-option"
+                                onClick={() => handleSelect('books')}
+                                style={{ color: '#8b5cf6', fontWeight: 'bold' }}
+                            >
+                                Livros
+                            </div>
+                        )}
                     </div>
                 )}
             </div>

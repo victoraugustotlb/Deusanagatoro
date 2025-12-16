@@ -98,6 +98,7 @@ window.App = () => {
                 onNavigate={handleNavigate}
                 onToggleTheme={handleToggleTheme}
                 theme={theme}
+                currentView={currentView}
             />
             <div className="container">
                 {currentView === 'home' && (
