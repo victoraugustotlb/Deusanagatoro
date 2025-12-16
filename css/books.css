@@ -1,0 +1,123 @@
+/* Books Page Styles */
+.bookshelf-container {
+    padding: 2rem 0;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.bookshelf {
+    display: flex;
+    align-items: flex-end;
+    /* Align books to bottom of shelf */
+    justify-content: center;
+    gap: 4px;
+    border-bottom: 12px solid #5d4037;
+    /* Shelf look */
+    padding-bottom: 0px;
+    margin-bottom: 4rem;
+    position: relative;
+    padding: 0 2rem;
+    min-height: 250px;
+    /* Ensure space for books */
+}
+
+/* Wood texture/shadow for shelf */
+.bookshelf::after {
+    content: '';
+    position: absolute;
+    bottom: -24px;
+    left: 10px;
+    right: 10px;
+    height: 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    filter: blur(10px);
+    z-index: -1;
+}
+
+.book-spine {
+    width: 40px;
+    border-radius: 3px 3px 0 0;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    box-shadow: inset 2px 0 5px rgba(0, 0, 0, 0.2), inset -2px 0 5px rgba(255, 255, 255, 0.1), 2px 0 5px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Writing vertical text */
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.8rem;
+    font-weight: 600;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding: 10px 0;
+}
+
+.book-spine:hover {
+    transform: translateY(-10px) scale(1.05);
+    z-index: 10;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Random heights classes (handled by JS effectively, but defaults here) */
+.h-1 {
+    height: 160px;
+}
+
+.h-2 {
+    height: 180px;
+}
+
+.h-3 {
+    height: 200px;
+}
+
+.h-4 {
+    height: 220px;
+}
+
+.h-5 {
+    height: 150px;
+}
+
+.h-6 {
+    height: 190px;
+}
+
+/* Book Colors with gradients */
+.color-1 {
+    background: linear-gradient(90deg, #ef4444, #b91c1c);
+}
+
+.color-2 {
+    background: linear-gradient(90deg, #f97316, #c2410c);
+}
+
+.color-3 {
+    background: linear-gradient(90deg, #f59e0b, #b45309);
+}
+
+.color-4 {
+    background: linear-gradient(90deg, #10b981, #047857);
+}
+
+.color-5 {
+    background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+}
+
+.color-6 {
+    background: linear-gradient(90deg, #6366f1, #4338ca);
+}
+
+.color-7 {
+    background: linear-gradient(90deg, #8b5cf6, #6d28d9);
+}
+
+.color-8 {
+    background: linear-gradient(90deg, #ec4899, #be185d);
+}

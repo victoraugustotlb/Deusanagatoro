@@ -136,7 +136,7 @@ window.App = () => {
                 )}
 
                 {currentView === 'books' && (
-                    <window.Books />
+                    <window.BooksPage />
                 )}
             </div>
             <window.Footer />
