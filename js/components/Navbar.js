@@ -38,11 +38,20 @@ window.Navbar = ({ onNavigate, onToggleTheme, theme, currentView }) => {
                     </div>
                 </div>
                 {isOpen && (
-                    <div className="custom-select-options" style={{ minWidth: '100%' }}>
+                    <div className="custom-select-options" style={{ minWidth: '100%', backgroundColor: 'var(--bg-color)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
                         {currentView !== 'home' && (
                             <div
                                 className="custom-option"
                                 onClick={() => handleSelect('home')}
+                                style={{
+                                    background: 'var(--accent-gradient)',
+                                    WebkitBackgroundClip: 'text',
+                                    backgroundClip: 'text',
+                                    WebkitTextFillColor: 'transparent',
+                                    fontWeight: '700',
+                                    letterSpacing: '-0.02em',
+                                    fontSize: '1.2rem'
+                                }}
                             >
                                 Pérolas
                             </div>
@@ -51,7 +60,15 @@ window.Navbar = ({ onNavigate, onToggleTheme, theme, currentView }) => {
                             <div
                                 className="custom-option"
                                 onClick={() => handleSelect('books')}
-                                style={{ color: '#8b5cf6', fontWeight: 'bold' }}
+                                style={{
+                                    background: 'var(--accent-gradient)',
+                                    WebkitBackgroundClip: 'text',
+                                    backgroundClip: 'text',
+                                    WebkitTextFillColor: 'transparent',
+                                    fontWeight: '700',
+                                    letterSpacing: '-0.02em',
+                                    fontSize: '1.2rem'
+                                }}
                             >
                                 Livros
                             </div>
