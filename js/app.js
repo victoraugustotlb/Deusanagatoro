@@ -195,7 +195,7 @@ window.App = () => {
         currentView={currentView}
       />
       <div className="container">
-        {currentView === "home" && (
+        {(currentView === "home" || currentView === "add") && (
           <React.Fragment>
             <header>
               <h1>As pérolas de 2026 já estão aqui</h1>
