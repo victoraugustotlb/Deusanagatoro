@@ -5,19 +5,54 @@ window.App = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
+    const [theme, setTheme] = useState(localStorage.getItem('theme') || 'system');
     const [filter, setFilter] = useState('Todos');
     const [searchTerm, setSearchTerm] = useState(''); // filtro de busca por texto
     const [sortOrder, setSortOrder] = useState('Mais recentes'); // filtro de data
 
     // Apply theme on mount and change
     useEffect(() => {
-        document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
+        const applyTheme = () => {
+            let targetTheme = theme;
+
+            // Se for 'system', descobre qual é a preferência do SO do usuário
+            if (theme === 'system') {
+                const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                targetTheme = systemDark ? 'dark' : 'light';
+            }
+
+            document.documentElement.setAttribute('data-theme', targetTheme);
+            localStorage.setItem('theme', theme);
+        };
+
+        applyTheme();
+
+        // Se estiver em modo 'system', adiciona um ouvinte para mudar automaticamente 
+        // caso o usuário mude o tema do próprio computador/celular enquanto usa o site
+        if (theme === 'system') {
+            const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+            const handleChange = () => applyTheme();
+            
+            // Suporte para navegadores mais novos e antigos
+            if (mediaQuery.addEventListener) {
+                mediaQuery.addEventListener('change', handleChange);
+            } else {
+                mediaQuery.addListener(handleChange);
+            }
+
+            return () => {
+                if (mediaQuery.removeEventListener) {
+                    mediaQuery.removeEventListener('change', handleChange);
+                } else {
+                    mediaQuery.removeListener(handleChange);
+                }
+            };
+        }
     }, [theme]);
 
-    const handleToggleTheme = () => {
-        setTheme(prevTheme => prevTheme === 'dark' ? 'light' : 'dark');
+    // Agora aceita o argumento que vem do Navbar ('light', 'dark' ou 'system')
+    const handleToggleTheme = (selectedTheme) => {
+        setTheme(selectedTheme);
     };
 
     // Fetch data from our Serverless API
