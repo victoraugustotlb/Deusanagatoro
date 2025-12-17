@@ -4,6 +4,7 @@
     "description": "Perolas da Call",
     "main": "index.html",
     "dependencies": {
+        "discord-interactions": "^4.4.0",
         "pg": "^8.11.3"
     }
 }
