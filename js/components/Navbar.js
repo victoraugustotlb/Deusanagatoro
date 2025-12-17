@@ -31,11 +31,6 @@ window.Navbar = ({ onNavigate, onToggleTheme, theme, currentView }) => {
                     <span className="nav-brand" style={{ marginRight: '0.5rem' }}>
                         {currentView === 'books' ? 'Livros' : 'Perolas da Call'}
                     </span>
-                    <div className="arrow">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </div>
                 </div>
                 {isOpen && (
                     <div className="custom-select-options" style={{ minWidth: '100%', backgroundColor: 'var(--bg-color)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>

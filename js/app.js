@@ -7,6 +7,8 @@ window.App = () => {
     const [error, setError] = useState(null);
     const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
     const [filter, setFilter] = useState('Todos');
+    const [searchTerm, setSearchTerm] = useState(''); // filtro de busca por texto
+    const [sortOrder, setSortOrder] = useState('Mais recentes'); // filtro de data
 
     // Apply theme on mount and change
     useEffect(() => {
@@ -110,6 +112,40 @@ window.App = () => {
         }
     };
 
+    // LÓGICA DE FILTRAGEM E ORDENAÇÃO
+    const getProcessedData = () => {
+        let processed = [...data];
+
+        // Filtro por Nome (Amigo)
+        if (filter !== 'Todos') {
+            processed = processed.filter(post => post.friend === filter);
+        }
+
+        // Filtro por Texto (Título ou Conteúdo)
+        if (searchTerm) {
+            const term = searchTerm.toLowerCase();
+            processed = processed.filter(post => 
+                (post.title && post.title.toLowerCase().includes(term)) || 
+                (post.body && post.body.toLowerCase().includes(term))
+            );
+        }
+
+        // Ordenação por Data
+        processed.sort((a, b) => {
+            const dateA = new Date(a.date || a.created_at || 0);
+            const dateB = new Date(b.date || b.created_at || 0);
+
+            if (sortOrder === 'Mais recentes') {
+                return dateB - dateA; // Decrescente
+            } else {
+                return dateA - dateB; // Crescente
+            }
+        });
+        return processed;
+    };
+
+    const filteredData = getProcessedData();
+
     return (
         <React.Fragment>
             <window.Navbar
@@ -125,19 +161,50 @@ window.App = () => {
                             <h1>As pérolas de 2026 já estão aqui</h1>
                             <p className="subtitle">Disclaimer: utilize de forma moderada, database limitada!</p>
                         </header>
+                        {/* ÁREA DE FILTROS */}
+                        <div style={{ 
+                            display: 'grid', 
+                            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
+                            gap: '1.5rem', 
+                            marginBottom: '2rem' 
+                        }}>
+                            {/* Busca por Texto */}
+                            <div className="input-group" style={{ marginBottom: 0 }}>
+                                <label className="input-label">Buscar</label>
+                                <input
+                                    type="text"
+                                    className="input-text"
+                                    placeholder="Pesquisar título ou conteúdo..."
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                />
+                            </div>
 
-                        <div style={{ maxWidth: '300px', margin: '0 0 2rem 0' }}>
-                            <window.CustomSelect
-                                value={filter}
-                                onChange={setFilter}
-                                options={['Todos', ...window.FRIENDS]}
-                                label="Filtrar por nome"
-                            />
+                            {/* Filtro por Nome */}
+                            <div>
+                                <window.CustomSelect
+                                    value={filter}
+                                    onChange={setFilter}
+                                    options={['Todos', ...window.FRIENDS]}
+                                    label="Filtrar por nome"
+                                />
+                            </div>
+
+                            {/* Ordenar por Data */}
+                            <div>
+                                <window.CustomSelect
+                                    value={sortOrder}
+                                    onChange={setSortOrder}
+                                    options={['Mais recentes', 'Mais antigos']}
+                                    label="Ordenar por data"
+                                />
+                            </div>
                         </div>
 
                         <main>
+                            {/* Passamos a variável processada aqui ao invés de filtrar inline */}
                             <window.PostGrid
-                                data={filter === 'Todos' ? data : data.filter(post => post.friend === filter)}
+                                data={filteredData}
                                 loading={loading}
                                 error={error}
                                 onDelete={handleDeletePost}

@@ -484,26 +484,109 @@ input:checked+.slider:before {
 /* Footer Styles */
 .footer {
     margin-top: auto;
-    background: rgba(15, 23, 42, 0.8);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 2rem 0;
     width: 100%;
+    padding: 3rem 0; /* Espaçamento generoso para visual profissional */
+    
+    /* VARIÁVEIS DE TEMA: Isso corrige o bug da tela branca */
+    background-color: var(--card-bg); 
+    border-top: var(--card-border);
+    
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-.footer-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+/* Container centralizado */
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 0 2rem;
+    display: flex;
+    justify-content: space-between; /* Separa marca (esq) e links (dir) */
+    align-items: center;
+    flex-wrap: wrap; /* Permite quebrar linha no mobile */
+    gap: 2rem;
 }
 
-.footer-brand {
-    font-size: 1.2rem;
-    font-weight: 700;
+/* --- LADO ESQUERDO: MARCA --- */
+.footer-brand-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.footer-logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0;
+    
+    /* Mantém a identidade visual do gradiente roxo/azul */
     background: var(--accent-gradient);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    letter-spacing: -0.02em;
+}
+
+.footer-tagline {
+    font-size: 0.9rem;
+    color: var(--text-secondary); /* Cinza claro (dark) / Cinza escuro (light) */
+    margin: 0;
+    font-weight: 400;
+}
+
+/* --- LADO DIREITO: LINKS E LEGAL --- */
+.footer-legal-section {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.footer-links {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1.5rem;
+}
+
+.footer-link {
+    text-decoration: none;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.footer-link:hover {
+    color: var(--text-primary); /* Fica branco (dark) ou preto (light) ao passar o mouse */
+    transform: translateY(-1px);
+}
+
+.separator {
+    color: var(--text-secondary);
+    opacity: 0.4;
+    font-size: 0.8rem;
+}
+
+.footer-copyright {
+    font-size: 0.8rem;
+    color: var(--text-secondary); /* CORREÇÃO PRINCIPAL DE CONTRASTE */
+    opacity: 0.8;
+}
+
+/* --- RESPONSIVIDADE (MOBILE) --- */
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 2rem;
+    }
+
+    .footer-legal-section {
+        text-align: center;
+        align-items: center;
+    }
+
+    .footer-links {
+        justify-content: center;
+    }
 }

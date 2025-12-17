@@ -3,5 +3,6 @@ window.FRIENDS = [
     "Murilo",
     "Grolla",
     "Arthur",
-    "Xiquitos"
+    "Xiquitos",
+    "Thigas"
 ];
