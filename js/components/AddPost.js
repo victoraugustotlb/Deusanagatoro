@@ -96,7 +96,7 @@ window.AddPost = ({ onCancel, onSubmit }) => {
           <div className="mac-modal-footer">
             <button
               type="button"
-              className="btn mac-btn mac-btn-secondary cursor-pointer"
+              className="btn mac-btn mac-btn-secondary"
               onClick={onCancel}
               disabled={isSubmitting}
             >
@@ -104,7 +104,7 @@ window.AddPost = ({ onCancel, onSubmit }) => {
             </button>
             <button
               type="submit"
-              className="btn mac-btn mac-btn-primary cursor-pointer"
+              className="btn mac-btn mac-btn-primary"
               disabled={isSubmitting}
             >
               {isSubmitting ? "Salvando..." : "Salvar Pérola"}

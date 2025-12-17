@@ -1090,6 +1090,7 @@ input:checked + .slider:before {
     font-weight: 500;
     font-size: 0.95rem;
     transition: all 0.2s;
+    cursor: pointer;
 }
 
 /* Botão de Cancelar (secundário) */
@@ -1097,9 +1098,11 @@ input:checked + .slider:before {
     background-color: transparent;
     border: 1px solid var(--border-color);
     color: var(--text-primary);
+    cursor: pointer;
 }
 .mac-btn-secondary:hover {
     background-color: var(--border-color);
+    cursor: pointer;
 }
 
 /* Botão de Salvar (primário - azul vibrante) */
@@ -1110,10 +1113,12 @@ input:checked + .slider:before {
 }
 .mac-btn-primary:hover {
     background-color: #0062cc;
+    cursor: pointer;
 }
 .mac-btn-primary:disabled {
     background-color: #80bdff;
     border-color: #80bdff;
+    cursor: not-allowed;
 }
 
 /* Animações simples de entrada */
@@ -1130,4 +1135,47 @@ input:checked + .slider:before {
 [data-theme="dark"] .mac-modal-header,
 [data-theme="dark"] .mac-modal-footer {
     background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* --- CORREÇÃO DE TEMA CLARO (LIGHT MODE) PARA O MODAL --- */
+
+/* 1. Fundo e Texto dos Inputs no Modo Claro */
+[data-theme="light"] .mac-modal .form-control,
+[data-theme="light"] .mac-modal .form-select {
+    background-color: #f1f5f9; /* Fundo cinza bem suave (Slate-100) */
+    color: #1e293b;            /* Texto cinza escuro (Slate-800) */
+    border-color: #cbd5e1;     /* Borda cinza visível (Slate-300) */
+}
+
+/* 2. Efeito de Foco no Modo Claro */
+[data-theme="light"] .mac-modal .form-control:focus,
+[data-theme="light"] .mac-modal .form-select:focus {
+    background-color: #ffffff; /* Fica branco puro ao digitar */
+    border-color: #3b82f6;     /* Borda azul padrão */
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); /* Brilho azul suave */
+}
+
+/* 3. Cor dos Labels (Títulos dos campos) */
+[data-theme="light"] .mac-modal .form-label {
+    color: #475569; /* Cinza médio para boa leitura */
+}
+
+/* 4. Cor do Placeholder (Texto de exemplo) */
+[data-theme="light"] .mac-modal ::placeholder {
+    color: #94a3b8;
+}
+
+/* 5. Ícone da setinha do Select (precisa ser escuro no fundo claro) */
+[data-theme="light"] .mac-modal .form-select {
+    /* Trocamos a cor do stroke (traço) do SVG de claro para escuro (%23334155) */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23334155' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+}
+
+/* 6. Ajuste dos botões no Modo Claro */
+[data-theme="light"] .mac-btn-secondary {
+    border-color: #cbd5e1;
+    color: #475569;
+}
+[data-theme="light"] .mac-btn-secondary:hover {
+    background-color: #f1f5f9;
 }
