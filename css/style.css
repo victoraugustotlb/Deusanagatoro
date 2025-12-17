@@ -175,26 +175,57 @@ p.subtitle {
 .navbar {
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 1000; /* Aumentei o z-index para garantir que fique sobre os filtros */
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    background: rgba(15, 23, 42, 0.8);
+    
+    /* Mágica do Tema + Glassmorphism */
+    /* Isso pega a cor do card (Branco ou Escuro) e aplica 15% de transparência */
+    background-color: color-mix(in srgb, var(--card-bg), transparent 15%);
+    
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    
+    border-bottom: var(--card-border);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .nav-brand {
     font-size: 1.5rem;
-    font-weight: 700;
+    font-weight: 800;
+    /* Gradiente do texto */
     background: var(--accent-gradient);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     text-decoration: none;
     letter-spacing: -0.02em;
+    cursor: pointer;
+}
+
+/* Ajuste no botão de menu (dropdown) para alinhar melhor */
+.custom-select-trigger {
+    color: var(--text-primary);
+}
+
+/* Ajuste para o switch de tema ficar alinhado */
+.nav-actions {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+/* Responsividade Mobile */
+@media (max-width: 600px) {
+    .navbar {
+        padding: 1rem;
+    }
+    
+    .theme-label {
+        display: none; /* Esconde texto "Modo Claro" no mobile para economizar espaço */
+    }
 }
 
 .btn-primary {
@@ -588,5 +619,108 @@ input:checked+.slider:before {
 
     .footer-links {
         justify-content: center;
+    }
+}
+
+/* =========================================
+   FILTERS & TOOLBAR STYLES
+   ========================================= */
+
+/* Container da Barra de Ferramentas */
+.filters-toolbar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    padding: 1.5rem;
+    background: var(--card-bg); /* Fundo sutil */
+    border: var(--card-border);
+    border-radius: 1rem;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(8px); /* Efeito Glass */
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: relative; /* Necessário para posicionar ícones */
+}
+
+.filter-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-left: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* --- Estilização Unificada dos Inputs (Texto e Select) --- */
+
+/* Wrapper para colocar o ícone dentro do input */
+.input-icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+/* O Ícone SVG */
+.input-icon {
+    position: absolute;
+    left: 1rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--text-secondary);
+    pointer-events: none;
+    z-index: 10;
+    transition: color 0.3s ease;
+}
+
+/* O Input de Texto Real */
+.styled-input {
+    width: 100%;
+    background-color: var(--bg-color); /* Contraste com o card */
+    border: var(--card-border);
+    border-radius: 0.75rem;
+    padding: 0.85rem 1rem 0.85rem 3rem; /* Padding na esquerda para o ícone */
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    height: 3.2rem; /* Altura fixa para alinhar com selects */
+}
+
+/* Estados de Focus (A mágica do UX) */
+.styled-input:focus,
+.custom-select-trigger.open,
+.custom-select-trigger:focus {
+    outline: none;
+    border-color: #8b5cf6; /* Roxo principal */
+    background-color: var(--input-bg);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15); /* Glow suave */
+}
+
+/* Quando focado, o ícone também ganha cor */
+.styled-input:focus + .input-icon,
+.styled-input:focus ~ .input-icon {
+    color: #8b5cf6;
+}
+
+/* --- Atualização para o seu CustomSelect Existente --- */
+/* Forçamos o CustomSelect a parecer igual ao input de texto */
+.custom-select-trigger {
+    background-color: var(--bg-color) !important;
+    border-radius: 0.75rem !important;
+    height: 3.2rem !important;
+    padding-left: 1rem !important; /* Ajuste conforme necessário */
+}
+
+/* Mobile: Coloca um em cima do outro */
+@media (max-width: 768px) {
+    .filters-toolbar {
+        padding: 1rem;
+        gap: 1rem;
     }
 }

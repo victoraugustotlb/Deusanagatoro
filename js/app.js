@@ -162,41 +162,44 @@ window.App = () => {
                             <p className="subtitle">Disclaimer: utilize de forma moderada, database limitada!</p>
                         </header>
                         {/* ÁREA DE FILTROS */}
-                        <div style={{ 
-                            display: 'grid', 
-                            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
-                            gap: '1.5rem', 
-                            marginBottom: '2rem' 
-                        }}>
-                            {/* Busca por Texto */}
-                            <div className="input-group" style={{ marginBottom: 0 }}>
-                                <label className="input-label">Buscar</label>
-                                <input
-                                    type="text"
-                                    className="input-text"
-                                    placeholder="Pesquisar título ou conteúdo..."
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                />
+                        <div className="filters-toolbar">
+                            {/* Busca por Texto com Ícone */}
+                            <div className="filter-group">
+                                <label className="filter-label">Pesquisar</label>
+                                <div className="input-icon-wrapper">
+                                    {/* Ícone de Lupa SVG */}
+                                    <svg className="input-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                    
+                                    <input
+                                        type="text"
+                                        className="styled-input"
+                                        placeholder="Título ou conteúdo..."
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                    />
+                                </div>
                             </div>
 
                             {/* Filtro por Nome */}
-                            <div>
+                            <div className="filter-group">
+                                <label className="filter-label">Filtrar por Autor</label>
+                                {/* O CustomSelect deve se adaptar ao CSS global que alteramos */}
                                 <window.CustomSelect
                                     value={filter}
                                     onChange={setFilter}
                                     options={['Todos', ...window.FRIENDS]}
-                                    label="Filtrar por nome"
                                 />
                             </div>
 
-                            {/* Ordenar por Data */}
-                            <div>
+                            {/* Ordenação Por data */}
+                            <div className="filter-group">
+                                <label className="filter-label">Filtro de data</label>
                                 <window.CustomSelect
                                     value={sortOrder}
                                     onChange={setSortOrder}
                                     options={['Mais recentes', 'Mais antigos']}
-                                    label="Ordenar por data"
                                 />
                             </div>
                         </div>
